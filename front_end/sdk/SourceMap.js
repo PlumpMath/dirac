@@ -113,6 +113,11 @@ SDK.SourceMap.prototype = {
   url() {},
 
   /**
+   * @return {?SDK.SourceMapV3}
+   */
+  payload: function() {},
+
+  /**
    * @return {!Array<string>}
    */
   sourceURLs() {},
@@ -200,6 +205,7 @@ SDK.TextSourceMap = class {
         SDK.TextSourceMap._base64Map[base64Digits.charAt(i)] = i;
     }
 
+    this._payload = payload;
     this._json = payload;
     this._compiledURL = compiledURL;
     this._sourceMappingURL = sourceMappingURL;
@@ -261,6 +267,14 @@ SDK.TextSourceMap = class {
    */
   url() {
     return this._sourceMappingURL;
+  }
+
+  /**
+   * @override
+   * @return {?SDK.SourceMapV3}
+   */
+  payload() {
+    return this._payload;
   }
 
   /**
@@ -328,7 +342,7 @@ SDK.TextSourceMap = class {
       var middle = first + step;
       var mapping = mappings[middle];
       if (lineNumber < mapping.lineNumber ||
-          (lineNumber === mapping.lineNumber && columnNumber < mapping.columnNumber)) {
+        (lineNumber === mapping.lineNumber && columnNumber < mapping.columnNumber)) {
         count = step;
       } else {
         first = middle;
@@ -337,7 +351,7 @@ SDK.TextSourceMap = class {
     }
     var entry = mappings[first];
     if (!first && entry &&
-        (lineNumber < entry.lineNumber || (lineNumber === entry.lineNumber && columnNumber < entry.columnNumber)))
+      (lineNumber < entry.lineNumber || (lineNumber === entry.lineNumber && columnNumber < entry.columnNumber)))
       return null;
     return entry;
   }

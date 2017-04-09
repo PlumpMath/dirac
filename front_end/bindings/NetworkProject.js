@@ -109,6 +109,14 @@ Bindings.NetworkProject = class {
   }
 
   /**
+   * @param {!Workspace.UISourceCode} uiSourceCode
+   * @return {?SDK.Script}
+   */
+  static getScriptFromSourceCode(uiSourceCode) {
+    return uiSourceCode[Bindings.NetworkProject._scriptSymbol];
+  }
+
+  /**
    * @param {!SDK.Target} target
    * @param {string} frameId
    * @param {boolean} isContentScripts
